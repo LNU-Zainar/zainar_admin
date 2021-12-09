@@ -19,6 +19,7 @@ const APIDescriptions = {
   getItems: 'GET /items',
   getItem: 'GET /items/:id',
   deleteItem: 'DELETE /admin/items/:id',
+  putItem: '/PUT /admin/items/:id',
 
   getCategory: 'GET /category',
   postCategory: 'POST /admin/category',
@@ -50,4 +51,5 @@ export const deleteLocation = createAPI(APIDescriptions.deleteLocation)
 export const getUsers = createAPI(APIDescriptions.getUsers)
 export const deleteUser = createAPI(APIDescriptions.deleteUser)
 export const deleteItem = createAPI(APIDescriptions.deleteItem)
+export const putItem = createAPI(APIDescriptions.putItem)
 
