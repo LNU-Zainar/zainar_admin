@@ -8,9 +8,9 @@
       <template v-else-if="lostItems.length">
         <ListItem v-for="(item, index) in lostItems" :key="index" :item="item" @click="handleItemClick(item)">
           <div class="user-post-actions">
-            <el-button size="mini" type="default" icon="el-icon-edit" @click="handleItemEdit(item)">
+            <!-- <el-button size="mini" type="default" icon="el-icon-edit" @click="handleItemEdit(item)">
               编辑
-            </el-button>
+            </el-button> -->
 
             <el-popconfirm
               @confirm="handlePopConfirm(item)"
@@ -104,7 +104,6 @@ export default {
       })
     },
     onSearch () {
-      console.log(this.formModel)
       this.fetchListItems()
     },
     handleItemEdit (item) {
@@ -116,19 +115,13 @@ export default {
       })
     },
     handlePopConfirm (item) {
-      api.deleteUserItem(null, {
+      api.deleteItem(null, {
         pathParams: {
           id: item.id
         }
       })
       .then(() => {
-        const index = this.lostItems.indexOf(item)
-        if (index > -1) {
-          this.lostItems.splice(index, 1)
-        }
-      })
-      .finally(() => {
-        this.comfirmVisible = false
+        this.fetchListItems()
       })
     }
   }

@@ -30,7 +30,8 @@ module.exports = {
           '^/proxy': '/'
         },
         ws: true,
-        changeOrigin: true
+        changeOrigin: true,
+        autoRewrite: true
       }
     }
   }

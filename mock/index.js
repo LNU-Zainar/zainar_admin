@@ -334,8 +334,8 @@ route('GET /category', {
   code: 200,
   message: 'ok', 
   data: [
-    { name: '校园卡', id: '0' },
-    { name: '雨伞', id: '1' }
+    { category_name: '校园卡', id: '0' },
+    { category_name: '雨伞', id: '1' }
   ]
 })
 
@@ -361,8 +361,8 @@ route('GET /location', {
   code: 200,
   message: 'ok',
   data: [
-    { name: '图书馆', id: '0' },
-    { name: '鹏园', id: '1' }
+    { location_name: '图书馆', id: '0' },
+    { location_name: '鹏园', id: '1' }
   ]
 })
 

@@ -53,9 +53,9 @@ export default {
     return {
       routerLinks: [
         {
-          text: '用户管理',
-          to: '/user',
-          icon: 'user'
+          text: '招领管理',
+          to: '/list',
+          icon: 'sad'
         },
         {
           text: '地点管理',
@@ -68,9 +68,9 @@ export default {
           icon: 'category'
         },
         {
-          text: '招领管理',
-          to: '/list',
-          icon: 'sad'
+          text: '用户管理',
+          to: '/user',
+          icon: 'user'
         }
       ]
     }
@@ -151,7 +151,7 @@ export default {
           opacity: 0;
         }
 
-      &.router-link-exact-active  {
+      &.router-link-active  {
         color: rgba($primaryColor, 1);
         &:after {
           opacity: 1;

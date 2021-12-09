@@ -9,30 +9,34 @@ const createAPI = description => (payload, config) => request({
 })
 
 const APIDescriptions = {
-  login: 'POST /auth/login',
-  logout: 'POST /auth/logout',
-  getUserInfo: 'GET /userinfo',
+  login: 'POST /admin/auth/login',
+  logout: 'POST /admin/auth/logout',
+  getUserInfo: 'GET /admin',
+
+  getUsers: 'GET /admin/users',
+  deleteUser: 'DELETE /admin/users/:id',
+
   getItems: 'GET /items',
-  putItem: 'PUT /item/:id',
-  getItem: 'GET /item/:id',
-  getUploadToken: 'GET /upload_token',
+  getItem: 'GET /items/:id',
+  deleteItem: 'DELETE /admin/items/:id',
+
   getCategory: 'GET /category',
-  postCategory: 'POST /category',
-  putCategory: 'PUT /category/:id',
-  deleteCategory: 'DELETE /category/:id',
+  postCategory: 'POST /admin/category',
+  putCategory: 'PUT /admin/category/:id',
+  deleteCategory: 'DELETE /admin/category/:id',
+
   getLocation: 'GET /location',
-  postLocation: 'POST /location',
-  putLocation: 'PUT /location/:id',
-  deleteLocation: 'DELETE /location/:id',
-  getUserItems: 'GET /users',
-  deleteUserItem: 'DELETE /users/:id'
+  postLocation: 'POST /admin/location',
+  putLocation: 'PUT /admin/location/:id',
+  deleteLocation: 'DELETE /admin/location/:id',
+
+  getUploadToken: 'GET /upload_token'
 }
 
 export const login = createAPI(APIDescriptions.login)
 export const logout = createAPI(APIDescriptions.logout)
 export const getUserInfo = createAPI(APIDescriptions.getUserInfo)
 export const getItems = createAPI(APIDescriptions.getItems)
-export const putItem = createAPI(APIDescriptions.putItem)
 export const getUploadToken = createAPI(APIDescriptions.getUploadToken)
 export const getItem = createAPI(APIDescriptions.getItem)
 export const getCategory = createAPI(APIDescriptions.getCategory)
@@ -43,6 +47,7 @@ export const getLocation = createAPI(APIDescriptions.getLocation)
 export const postLocation = createAPI(APIDescriptions.postLocation)
 export const putLocation = createAPI(APIDescriptions.putLocation)
 export const deleteLocation = createAPI(APIDescriptions.deleteLocation)
-export const getUserItems = createAPI(APIDescriptions.getUserItems)
-export const deleteUserItem = createAPI(APIDescriptions.deleteUserItem)
+export const getUsers = createAPI(APIDescriptions.getUsers)
+export const deleteUser = createAPI(APIDescriptions.deleteUser)
+export const deleteItem = createAPI(APIDescriptions.deleteItem)
 

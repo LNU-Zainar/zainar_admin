@@ -87,7 +87,7 @@ export default {
       }).then(data => {
         data.forEach(item => {
           this.locationOptions.push({
-            label: item.name,
+            label: item.category_name,
             value: item.id
           })
         })
@@ -97,7 +97,7 @@ export default {
       }).then(data => {
         data.forEach(item => {
           this.categoryOptions.push({
-            label: item.name,
+            label: item.location_name,
             value: item.id
           })
         })

@@ -14,6 +14,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
+    name: 'index',
     redirect: '/list'
   },
   {
@@ -111,6 +112,7 @@ const router = new VueRouter({
 })
 
 router.onError(() => {
+  console.log('onError')
   router.app.$Progress.finish()
 })
 
@@ -129,21 +131,23 @@ router.afterEach(() => {
 })
 
 router.beforeEach((to, from, next) => {
-  next()
-  // if (store.getters.isLogin || to.name === 'login') {
-  //   next()
-  // } else {
-  //   store.dispatch('queryUser').then(() => {
-  //     next()
-  //   }, () => {
-  //     next({
-  //       name: 'login',
-  //       query: {
-  //         from: to.fullPath
-  //       }
-  //     })
-  //   })
-  // }
+  if (store.getters.isLogin || to.name === 'login') {
+    next()
+  } else {
+    store.dispatch('queryUser').then(() => {
+      next()
+    }, () => {
+      if (from.name === 'login') {
+        router.app.$Progress.finish()
+      }
+      next({
+        name: 'login',
+        query: {
+          from: to.fullPath
+        }
+      })
+    })
+  }
 })
 
 export default router

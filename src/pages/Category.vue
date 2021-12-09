@@ -16,7 +16,7 @@
         width="100">
       </el-table-column>
       <el-table-column
-        prop="name"
+        prop="category_name"
         label="名称">
       </el-table-column>
       <el-table-column
@@ -30,16 +30,11 @@
 
           <el-popconfirm
             @confirm="deleteItem(props.row)"
-            title="您确定是否要删除该条发布信息？">
+            title="您确定是否要删除该分类？">
             <el-button size="mini" type="danger" icon="el-icon-delete" slot="reference" style="margin-left: 10px;">
             删除
             </el-button>
           </el-popconfirm>
-
-          <!-- <el-button type="danger" size="mini" @click="deleteUser(props.row)">
-            <i class="el-icon-delete"></i>
-            删除
-          </el-button> -->
         </template>
       </el-table-column>
     </el-table>
@@ -53,24 +48,6 @@
         :total="total">
       </el-pagination>
     </div>
-
-    <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
-      <el-form :model="form">
-        <el-form-item label="活动名称" :label-width="80">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="活动区域" :label-width="80">
-          <el-select v-model="form.region" placeholder="请选择活动区域">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
@@ -84,11 +61,7 @@ export default {
       currentPage: 1,
       pageSize: 20,
       items: [],
-      total: 0,
-      dialogFormVisible: false,
-      form: {
-
-      }
+      total: 0
     }
   },
   mounted () {
@@ -108,7 +81,7 @@ export default {
     },
     openInputBox (item) {
       this.$prompt('请输入名称', '提示', {
-        inputValue: item ? item.name : undefined,
+        inputValue: item ? item.category_name : undefined,
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         inputPattern: /[^\s]+/,
@@ -123,14 +96,14 @@ export default {
     },
     postItem (value) {
       api.postCategory({
-        name: value
+        category_name: value
       }).then(() => {
         this.fetchItems()
       })
     },
     editItem (item, value) {
       api.putCategory({
-        name: value
+        category_name: value
       }, {
         pathParams: {
           id: item.id
