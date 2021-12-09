@@ -1,4 +1,4 @@
-# 「在哪」 PC网站
+# 「在哪」管理后台
 > 本项目使用Vue.js官方提供的[Vue CLI](https://cli.vuejs.org/zh/)脚手架工具构建，项目代码基于[Vue 2](https://cn.vuejs.org/v2/guide/)框架编写，界面UI基于[Element UI](https://element.eleme.cn/#/zh-CN/component/installation)实现。
 
 ## 搭建开发环境
