@@ -5,9 +5,7 @@ import { BusinessError } from './error'
 
 const isDev = process.env.NODE_ENV === 'development'
 const instance = axios.create({
-  baseURL: isDev
-    ? ''
-    : process.env.VUE_APP_SERVER_URL,
+  baseURL: '',
   withCredentials: true,
   timeout: 10000,
   // 自定义配置

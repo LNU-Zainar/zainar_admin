@@ -1,6 +1,7 @@
 const mockMiddleware = require('./mock')
 
 module.exports = {
+  publicPath: '/admin/',
   chainWebpack: config => {
       config
         .plugin('html')

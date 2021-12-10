@@ -37,7 +37,7 @@ route('POST /auth/register', res => {
   })
 })
 
-route('POST /auth/login', res => {
+route('POST /admin/auth/login', res => {
   isLogin = true
   res.json({
     code: 200,
@@ -46,7 +46,7 @@ route('POST /auth/login', res => {
   })
 })
 
-route('POST /auth/logout', res => {
+route('POST /admin/auth/logout', res => {
   isLogin = false
   res.json({
     code: 200,
@@ -55,18 +55,12 @@ route('POST /auth/logout', res => {
   })
 })
 
-route('GET /userinfo', res => {
+route('GET /admin', res => {
   res.json({
     code: isLogin ? 200 : 403,
     message: 'ok',
     data: userInfo
   })
-})
-
-route('PUT /userinfo', {
-  code: 200,
-  message: '更新成功',
-  data: userInfo
 })
 
 route('GET /upload_token', {
@@ -300,27 +294,32 @@ route('POST /items', {
   data: {}
 })
 
-route('GET /item/:id', {
+route('GET /items/:id', {
   code: 200, 
   message: 'ok',
   data: {
-    "category_id": 2,
-    "create_time": "2021-11-27 22:07:36",
-    "description": null,
-    "id": 8,
+    "category_id": 3,
+    "category_name": "主机",
+    "create_time": "2021-12-09 19:23:18",
+    "description": "的撒后噶外观和哦啊五花肉恶评好好听瓦特我按头鹅火锅哦额我那根。",
+    "id": 3,
     "images": [
-      "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg",
-      "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg",
-      "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg",
-      "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg",
-      "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg",
-      "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg",
-      "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg"
+      "https://zainar-1300922881.cos.ap-guangzhou.myqcloud.com/images/73dc24c40acd0f7bc6230b1ec00cb035.jpg"
     ],
-    "location_id": 5,
-    "thumbnail": "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg",
-    "title": "钥匙",
-    "update_date": "2021-11-27 22:07:36"
+    "location_id": 9,
+    "location_name": "图书馆",
+    "phone": "18512345678",
+    "pickup_time": "2021-12-08 00:00:00",
+    "poster": {
+      "avatar": "https://zainar-1300922881.cos.ap-guangzhou.myqcloud.com/images/f1de38a4d917df513565a99a4852eac3.jpeg",
+      "description": null,
+      "email": null,
+      "nickname": "林来疯",
+      "uid": "admin"
+    },
+    "thumbnail": "https://zainar-1300922881.cos.ap-guangzhou.myqcloud.com/images/73dc24c40acd0f7bc6230b1ec00cb035.jpg",
+    "title": "MacBook Air",
+    "update_date": "2021-12-09 19:23:18"
   }
 })
 

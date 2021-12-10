@@ -11,7 +11,7 @@ const createAPI = description => (payload, config) => request({
 const APIDescriptions = {
   login: 'POST /admin/auth/login',
   logout: 'POST /admin/auth/logout',
-  getUserInfo: 'GET /admin',
+  getUserInfo: 'GET /admin/logined_user',
 
   getUsers: 'GET /admin/users',
   deleteUser: 'DELETE /admin/users/:id',

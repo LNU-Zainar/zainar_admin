@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import store from './store'
 import List from './pages/List.vue'
+import Post from './pages/Post.vue'
 import Add from './pages/Add.vue'
 import UserList from './pages/UserList.vue'
 import Login from './pages/Login.vue'
@@ -23,16 +24,15 @@ const routes = [
     component: List,
     meta: {
       title: '招领信息'
-    },
-    children: [
-      {
-        name: 'post',
-        path: 'post/:id',
-        meta: {
-          title: '详情'
-        }
-      }
-    ]
+    }
+  },
+  {
+    name: 'post',
+    path: '/post/:id',
+    component: Post,
+    meta: {
+      title: '详情'
+    }
   },
   {
     path: '/category',

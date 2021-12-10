@@ -7,7 +7,7 @@
         <ul class="aside-nav-list">
           <li v-for="link in routerLinks" :key="link.text">
             <router-link :to="link.to">
-              <i :class="['iconfont', 'icon-' + link.icon]"></i>
+              <i :class="link.icon"></i>
               {{link.text}}
             </router-link>
           </li>
@@ -22,32 +22,17 @@
       <Header v-if="!isLoginLayout"/>
       <router-view class="router-view"></router-view>
     </main>
-
-    <el-dialog
-      title="帖子详情"
-      :visible="dialogVisible"
-      :close-on-click-modal="false"
-      :close-on-press-escape="false"
-      :show-close="false"
-      width="50%">
-      <el-page-header slot="title" @back="handleBack" content="帖子详情">
-        <div>关闭</div>
-      </el-page-header>
-      <PostDetail/>
-    </el-dialog>
   </div>
 </template>
 
 <script>
 import Header from '@/components/Header'
-import PostDetail from '@/components/PostDetail'
 import { mapState } from 'vuex'
 
 export default {
   name: 'App',
   components: {
-    Header,
-    PostDetail
+    Header
   },
   data () {
     return {
@@ -55,22 +40,22 @@ export default {
         {
           text: '招领管理',
           to: '/list',
-          icon: 'sad'
+          icon: 'iconfont icon-item'
         },
         {
           text: '地点管理',
           to: '/location',
-          icon: 'location'
+          icon: 'iconfont icon-location'
         },
         {
           text: '分类管理',
           to: '/category',
-          icon: 'category'
+          icon: 'iconfont icon-tag'
         },
         {
           text: '用户管理',
           to: '/user',
-          icon: 'user'
+          icon: 'iconfont icon-user'
         }
       ]
     }
@@ -79,23 +64,9 @@ export default {
     ...mapState(['isAsideCollapsed']),
     isLoginLayout () {
       return this.$route.name === 'login'
-    },
-    dialogVisible () {
-      return this.$route.name === 'post' || this.$route.name === 'user-post'
     }
   },
   methods: {
-    handleBack () {
-      let parentRoute = null
-      this.$route.matched.some(route => {
-        if (route.name === this.$route.name) {
-          return true
-        } else {
-          parentRoute = route
-        }
-      })
-      this.$router.replace(parentRoute)
-    }
   }
 }
 </script>
