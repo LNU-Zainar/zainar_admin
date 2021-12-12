@@ -7,7 +7,7 @@
       </el-button>
     </div>
     <el-table
-      :loading="isLoading"
+      v-loading="isLoading"
       :data="items"
       style="width: 100%">
       <el-table-column
@@ -39,7 +39,7 @@
       </el-table-column>
     </el-table>
 
-    <div class="list-pagination">
+    <!-- <div class="list-pagination">
       <el-pagination
         :page-sizes="[10, 20, 40, 60, 80]"
         :current-page.sync="currentPage"
@@ -47,7 +47,7 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="total">
       </el-pagination>
-    </div>
+    </div> -->
   </div>
 </template>
 

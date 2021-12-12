@@ -1,12 +1,13 @@
 <template>
   <div class="user-list">
     <el-table
+      v-loading="isLoading"
       :data="users"
       style="width: 100%">
       <el-table-column
         prop="uid"
         label="ID"
-        width="100">
+        width="120">
       </el-table-column>
       <el-table-column
         prop="nickname"
@@ -66,18 +67,26 @@ export default {
     };
   },
   mounted () {
-    this.fetchUsers()
+    this.$watch(() => {
+      return this.currentPage + ',' + this.pageSize
+    }, this.fetchUsers, {
+      immediate: true
+    })
   },
   methods: {
     fetchUsers () {
-      this.isListLoading = true
-      api.getUsers(null, {
+      this.isLoading = true
+      api.getUsers({
+        page_size: this.pageSize,
+        cur_page: this.currentPage
+      }, {
         notifyType: 'f'
       }).then(data => {
+        this.total = data.total
         this.users = data.list
       })
       .finally(() => {
-        this.isListLoading = false
+        this.isLoading = false
       })
     },
     handlePopConfirm (item) {

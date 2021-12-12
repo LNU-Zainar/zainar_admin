@@ -7,7 +7,7 @@
       </el-button>
     </div>
     <el-table
-      :loading="isLoading"
+      v-loading="isLoading"
       :data="items"
       style="width: 100%">
       <el-table-column
@@ -51,7 +51,7 @@
       </el-table-column>
     </el-table>
 
-    <div class="list-pagination">
+    <!-- <div class="list-pagination">
       <el-pagination
         :page-sizes="[10, 20, 40, 60, 80]"
         :current-page.sync="currentPage"
@@ -59,26 +59,33 @@
         layout="total, sizes, prev, pager, next, jumper"
         :total="total">
       </el-pagination>
-    </div>
+    </div> -->
 
-    <el-dialog :title="isEditForm ? '编辑地点' : '新增地点'" :visible.sync="dialogFormVisible" @closed="handleDialogClosed" :close-on-click-modal="false" :close-on-press-escape="false">
+    <el-dialog center :title="isEditForm ? '编辑地点' : '新增地点'" :visible.sync="dialogFormVisible" @closed="handleDialogClosed" :close-on-click-modal="false" :close-on-press-escape="false"
+    :class="{'is-complete': isMapComplete}">
       <el-form ref="form" :model="form" :rules="formRules">
         <el-form-item label="地点名称" label-width="80" prop="name">
-          <el-input v-model="form.name"></el-input>
+          <el-input id="pickerInput" placeholder="输入关键字选取地点" v-model="form.name" clearable></el-input>
         </el-form-item>
         <el-row :gutter="20">
           <el-col :span="12">
             <el-form-item label="地点经度" label-width="80" prop="lng">
-              <el-input v-model="form.lng"></el-input>
+              {{ form.lng }}
             </el-form-item>
           </el-col>
           <el-col :span="12">
             <el-form-item label="地点纬度" label-width="80" prop="lat">
-              <el-input v-model="form.lat"></el-input>
+              {{ form.lat }}
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
+      
+      <div id="container"
+        v-loading="isMapLoading"
+        element-loading-text="地图加载中"
+        element-loading-background="transparent">
+      </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取 消</el-button>
         <el-button type="primary" @click="saveForm">
@@ -91,11 +98,18 @@
 
 <script>
 import * as api from '@/common/api'
+import mapAreaPath from '@/assets/mapAreaPath.json'
+import AMapLoader from '@amap/amap-jsapi-loader'
+import jquery from 'jquery'
+/* global AMap, AMapUI */
 
 export default {
   data () {
     return {
       isLoading: false,
+      isMapLoading: true,
+      isMapComplete: false,
+      isMapInited: false,
       currentPage: 1,
       pageSize: 20,
       items: [],
@@ -125,6 +139,9 @@ export default {
     }
   },
   mounted () {
+    this.map = null
+    this.positionPicker = null
+    this.poiPicker = null
     this.fetchItems()
   },
   methods: {
@@ -151,6 +168,150 @@ export default {
         lat: ''
       }
       this.dialogFormVisible = true
+      this.$nextTick(async () => {
+        const defaultPos = [110.347924, 21.268879]
+        const position = editItem ? [this.form.lng, this.form.lat]: defaultPos
+        try {
+          if (!this.map) {
+            await this.initMap(position).then(this.onMapComplete)
+          } else {
+            this.map.resize()
+          }
+          this.positionPicker.start(position)
+        } catch (err) {
+          this.$message.error('地图加载失败')
+        } finally {
+          this.isMapLoading = false
+        }
+      })
+    },
+    async onMapComplete (map) {
+      this.map = map
+      if (!this.positionPicker) {
+        this.positionPicker = await this.initPositionPicker()
+      }
+      if (!this.poiPicker) {
+        this.poiPicker = await this.initPoiPicker()
+        this.poiPicker.on('poiPicked', (poiResult) => {
+          this.form.name = poiResult.item.name
+          this.positionPicker.start([poiResult.item.location.lng, poiResult.item.location.lat])
+        })
+      }
+      return new Promise(resolve => {
+        setTimeout(() => {
+          this.isMapComplete = true
+          resolve()
+        })
+      })
+    },
+    async initMap (center) {
+      if (!window.AMap) {
+        await AMapLoader.load({
+          key: 'e765ee2c909344df70d61e4a6852adc5',
+          version: '2.0',
+          plugins: [],
+          AMapUI: {
+            version: '1.1',
+            plugins: []
+          },
+          // Loca: {
+          //   version: '2.0'
+          // },
+        })
+      }
+      const bounds = [mapAreaPath.map(item => [item.R, item.Q])]
+
+      const map = new AMap.Map('container', {
+        // mask: bounds,
+        resizeEnable: true,
+        rotateEnable: true,
+        pitchEnable: true,
+        scrollWheel: false,
+        labelzIndex: 999,
+        zoom: 16,
+        zooms: [14, 20],
+        viewMode:'2D',
+        pitch: 50,
+        rotation: 0,
+        showLabel: true,
+        features: ['bg','point','road','building'],
+        center,
+        mapStyle: 'amap://styles/grey',
+        layers: [
+          new AMap.createDefaultLayer({
+            visible: true,
+            zIndex: 0
+          }),
+          new AMap.Buildings({
+            zIndex: 9,
+            heightFactor: 2
+          })
+        ]
+      })
+
+      AMap.plugin([
+        'AMap.ToolBar'
+      ], () => {
+        map.addControl(new AMap.ToolBar())
+      })
+
+      const area = new AMap.Polygon({
+        zIndex: 1,
+        path: bounds,
+        strokeColor: '#0066ff',
+        strokeWeight: 2,
+        fillColor: '#71B3ff',
+        fillOpacity: .2
+      })
+      map.add(area)
+      map.on('hotspotclick', (evt) => {
+        if (this.positionPicker) {
+          this.form.name = evt.name
+          this.positionPicker.start([evt.lnglat.lng, evt.lnglat.lat])
+        }
+      })
+
+      return new Promise((resolve, reject) => {
+        map.on('complete', () => {
+          resolve(map)
+        })
+        map.on('error', reject)
+      })
+    },
+    initPositionPicker () {
+      return new Promise((resolve) => {
+        AMapUI.loadUI(['misc/PositionPicker'], PositionPicker => {
+          const positionPicker = new PositionPicker({
+            mode:'dragMap',
+            map: this.map,
+            iconStyle:{//自定义外观
+              url: process.env.BASE_URL + 'marker_blue.png',//图片地址
+              size:[25, 35],  //要显示的点大小，将缩放图片
+              ancher:[12.5, 35],//锚点的位置，即被size缩放之后，图片的什么位置作为选中的位置
+            }
+          })
+          positionPicker.on('success', positionResult => {
+            this.form.lng = positionResult.position.lng
+            this.form.lat = positionResult.position.lat
+          })
+          resolve(positionPicker)
+        })
+      })
+    },
+    initPoiPicker () {
+      AMapUI.setDomLibrary(jquery)
+      return new Promise((resolve) => {
+        AMapUI.loadUI(['misc/PoiPicker'],(PoiPicker) => {
+          const poiPicker = new PoiPicker({
+            input: 'pickerInput',
+            autocompleteOptions: {
+              city: '湛江',
+              citylimit: true
+            }
+          })
+          resolve(poiPicker)
+        })
+      })
     },
     saveForm () {
       this.$refs.form.validate(valid => {
@@ -179,24 +340,6 @@ export default {
         }
       })
     },
-    postItem (value) {
-      api.postLocation({
-        name: value
-      }).then(() => {
-        this.fetchItems()
-      })
-    },
-    editItem (item, value) {
-      api.putLocation({
-        name: value
-      }, {
-        pathParams: {
-          id: item.id
-        }
-      }).then(() => {
-        this.fetchItems()
-      })
-    },
     deleteItem (item) {
       api.deleteLocation(null, {
         pathParams: {
@@ -221,5 +364,10 @@ export default {
 }
 .list-pagination {
   margin: 30px 0;
+}
+#container {
+  width: 100%;
+  height: 400px;
+  background-color: #1a232c;
 }
 </style>

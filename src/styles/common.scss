@@ -16,3 +16,24 @@ ul, li {
 a {
   text-decoration: none;
 }
+
+.amap-logo, .amap-copyright {
+  display: none !important;
+}
+
+.amap-ui-misc-positionpicker-pin {
+  object-fit: contain;
+}
+
+.amap-maps {
+  opacity: 0;
+}
+.is-complete {
+  .amap-maps {
+    opacity: 1;
+  }
+}
+
+.sugg-item {
+  line-height: normal;
+}
