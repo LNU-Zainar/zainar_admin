@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <header class="header">
-      <router-link to="/" class="logo">Zainar</router-link>
+      <router-link to="/" class="logo"></router-link>
     </header>
     <main class="main">
       <el-form ref="loginForm" :model="loginForm" label-width="80px" :rules="loginFormRules">
@@ -94,9 +94,11 @@ export default {
   margin: 50px auto;
 }
 .logo {
-  font-size: 28px;
-  font-weight: bold;
-  color: $primaryColor;
+  display: block;
+  margin: auto;
+  width: 120px;
+  height: 30px;
+  background: url('../assets/logo.png') no-repeat center / contain;
 }
 .captcha-img {
   display: inline-block;

@@ -89,10 +89,9 @@ export default {
 .logo {
   display: block;
   margin: 50px auto;
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   background: url('./assets/logo_simple.png') no-repeat center / contain;
-  text-align: center;
 }
 .aside-nav {
   flex: 1 0 auto;

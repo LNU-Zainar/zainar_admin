@@ -3,7 +3,7 @@
     <el-table
       v-loading="isLoading"
       :data="users"
-      style="width: 100%">
+      style="width: 100%;">
       <el-table-column
         prop="uid"
         label="ID"
@@ -59,7 +59,7 @@ import * as api from '@/common/api'
 export default {
   data() {
     return {
-      isLoading: false,
+      isLoading: true,
       currentPage: 1,
       pageSize: 20,
       users: [],
@@ -104,56 +104,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.user {
-  .el-tabs {
-    display: flex;
-    align-items: stretch;
-    min-height: 300px;
-  }
-  ::v-deep .el-tabs__header {
-    height: auto;
-    flex: 0;
-  }
-  ::v-deep .el-tabs__content {
-    flex: 1;
-  }
-  .el-tab-pane {
-    padding: 50px 0;
-  }
-  &-form {
-    max-width: 700px;
-    margin: 0 auto;
-    &-cont {
-      display: flex;
-      flex-wrap: wrap;
-      // border-left: 2px solid #E4E7ED;
-    }
-    &-left {
-      flex: 1 1 100px;
-    }
-    &-right {
-      flex: 0 1 200px;
-      text-align: center;
-    }
-    &-bottom {
-      flex: 1 0 100%;
-    }
-    .avatar {
-      display: block;
-      margin: auto;
-      ::v-deep img {
-        width: 100%;
-      }
-    }
-    .progress {
-      margin: 5px auto;
-      width: 100px;
-    }
-  }
-  &-post-actions {
-    display: flex;
-    flex-direction: column;
-  }
+.user-list {
+  //
 }
 .list-pagination {
   margin: 30px 0;
